@@ -1,0 +1,52 @@
+<Project>
+  <!-- Compatibility packages -->
+  <ItemGroup>
+    <PackageReference
+      Include="System.Memory"
+      Version="4.6.3"
+      Condition="$(TargetFrameworkIdentifier) == '.NETStandard' or
+                                 $(TargetFrameworkIdentifier) == '.NETFramework' or
+                                 $(TargetFramework.StartsWith('netcoreapp2'))"
+    />
+    <PackageReference
+      Include="System.Threading.Tasks.Extensions"
+      Version="4.6.3"
+      Condition="$(TargetFramework) == 'netstandard2.0' or
+                                 $(TargetFramework) == 'netcoreapp2.0' or
+                                 $(TargetFrameworkIdentifier) == '.NETFramework'"
+    />
+    <PackageReference
+      Include="IsExternalInit"
+      Version="1.0.3"
+      Condition="$(TargetFrameworkIdentifier) == '.NETStandard' or
+                                 $(TargetFrameworkIdentifier) == '.NETFramework'"
+    >
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference
+      Include="Microsoft.Bcl.HashCode"
+      Version="6.0.0"
+      Condition="$(TargetFrameworkIdentifier) == '.NETStandard' or
+                                 $(TargetFrameworkIdentifier) == '.NETFramework' or
+                                 $(TargetFramework.StartsWith('netcoreapp2'))"
+    />
+    <PackageReference Include="Microsoft.Bcl.Memory" Version="10.0.1" />
+    <PackageReference
+      Include="Microsoft.CSharp"
+      Version="4.7.0"
+      Condition="$(TargetFrameworkIdentifier) == '.NETStandard' or
+                                 $(TargetFrameworkIdentifier) == '.NETFramework' or
+                                 $(TargetFramework.StartsWith('netcoreapp2'))"
+    />
+    <PackageReference
+      Include="Nullable"
+      Version="1.3.1"
+      Condition="$(TargetFrameworkIdentifier) == '.NETStandard' or
+                                 $(TargetFrameworkIdentifier) == '.NETFramework'"
+    >
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,43 @@
+<Project InitialTargets="ValidateProjectStyle">
+  <PropertyGroup>
+    <LangVersion Condition=" '$(LangVersion)' == '' ">14</LangVersion>
+    <!-- https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-versioning#defaults -->
+    <Nullable Condition=" '$(Nullable)' == '' ">enable</Nullable>
+    <ImplicitUsings Condition=" '$(ImplicitUsings)' == '' ">enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--Saves NuGet and MSBuild from doing additional work of downloading only to drop the contents, old framework reference packages and fix downgrade errors-->
+    <!-- https://github.com/dotnet/runtime/issues/47110 -->
+    <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
+  </ItemGroup>
+
+  <!-- Error handling -->
+  <PropertyGroup>
+    <!-- Compiler and analysis erros on build -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- enable the analyser on pre .net 5 targets on build -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <!-- don't enforce Code-style language rules (IDE rules) on build -->
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <!-- Don't error on all warnings, let's bump some in the editorconfig
+      This makes it possible to have more layers in the static analysis, otherwise it's only error or suggestion -->
+    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <!-- NU1702 = target mismatch. Which is still a warning, even after setting TreatWarningsAsErrors -->
+    <WarningsAsErrors>$(WarningsAsErrors);NU1702</WarningsAsErrors>
+    <!-- Error on target architecture mismatch between dependent assemblies -->
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>Error</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+  </PropertyGroup>
+
+  <Target Name="ValidateProjectStyle">
+    <Error
+      Condition=" '$(UsingMicrosoftNETSdk)' != 'true' "
+      Text="Only SDK projects are supported!"
+    />
+    <Error
+      Condition=" '$(TargetFramework)' == '' and '$(TargetFrameworks)' == '' "
+      Text="Set TargetFramework or TargetFrameworks before including common.props!"
+    />
+  </Target>
+</Project>
